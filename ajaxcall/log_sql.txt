@@ -1,0 +1,24 @@
+24 05 2022 21:34:03: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, '?')' at line 1
+-- Query name: insertUsuarioDB
+-- Query str: INSERT INTO users (Nombres, Paterno, Materno) VALUES ('?', ?, '?')
+
+24 05 2022 21:34:03: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '?, NOW())' at line 1
+-- Query name: insertEmpleadoDB
+-- Query str: INSERT INTO empleados (userId, Sueldo, FechaIngreso) VALUES ('?', ?, NOW())
+
+24 05 2022 21:35:07: Unknown column 'cas' in 'field list'
+-- Query name: insertUsuarioDB
+-- Query str: INSERT INTO users (Nombres, Paterno, Materno) VALUES ('jair', cas, 'san')
+
+24 05 2022 21:35:08: Cannot add or update a child row: a foreign key constraint fails (`pruebas_db`.`empleados`, CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE)
+-- Query name: insertEmpleadoDB
+-- Query str: INSERT INTO empleados (userId, Sueldo, FechaIngreso) VALUES ('0', 8000, NOW())
+
+24 05 2022 21:35:47: Field 'Login' doesn't have a default value
+-- Query name: insertUsuarioDB
+-- Query str: INSERT INTO users (Nombres, Paterno, Materno) VALUES ('jair', 'cas', 'san')
+
+24 05 2022 21:35:47: Cannot add or update a child row: a foreign key constraint fails (`pruebas_db`.`empleados`, CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userId`) ON DELETE CASCADE)
+-- Query name: insertEmpleadoDB
+-- Query str: INSERT INTO empleados (userId, Sueldo, FechaIngreso) VALUES ('0', 8000, NOW())
+

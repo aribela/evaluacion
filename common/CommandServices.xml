@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Commands>
+
+  <!-- Aumentar maximo del group concat -->
+  <Command id="MaximoGroupConcat">
+    <query> SET SESSION GROUP_CONCAT_MAX_LEN = 1000000 </query>
+  </Command>
+  <Command id="IdiomaEspanol">
+    <query> SET lc_time_names = 'es_ES'; </query>
+  </Command>
+
+  <!-- General Consult -->
+   <Command id="GetAllData">
+    <query>SELECT * FROM ? ?</query>
+   </Command>
+   <Command id="updateDB">
+    <query>UPDATE ? SET ?='?' WHERE ?=?</query>
+   </Command>
+   <Command id="deleteDB">
+     <query>DELETE FROM ? WHERE ?=? </query>
+   </Command>
+  <!-- Fin General Consult -->
+
+  <!--Consultas roles -->
+   <Command id="GetAllRoles">
+    <query>SELECT * FROM roles ?</query>
+   </Command>
+   <Command id="obtenerRolByIdDB">
+        <query>SELECT * FROM roles WHERE idRol=?</query>
+   </Command>
+   <Command id="updateRolGrid">
+     <query>UPDATE roles SET rol='@rol' WHERE idRol=@idRol </query>
+   </Command>
+   <Command id="insertRolGrid">
+     <query>INSERT INTO roles (rol, fechaCreacion) VALUES ('@rol', NOW())</query>
+   </Command>
+   <Command id="deleteRolesGrid">
+     <query>DELETE FROM roles WHERE idRol=@idRol </query>
+   </Command>
+
+
+   <!--Consultas usuarios -->
+  <Command id="LoginUser">
+    <query>SELECT * FROM usuarios WHERE email='?' AND password='?'</query>
+  </Command>
+  <Command id="UserByID">
+    <query>SELECT * FROM usuarios WHERE idUsuario=?</query>
+  </Command>
+  <Command id="getUsersForGrid">
+    <query>
+      SELECT A.*,
+      IF(A.activo=1,'Si','No') AS usuarioActivo,
+      IF(A.activo=1,'desactivar.png','activar.jpg') AS nombreImg
+      FROM usuarios A
+      ?
+      ORDER BY A.idRol
+    </query>
+  </Command>
+  <Command id="updateUserGrid">
+    <query>UPDATE usuarios SET idRol='@idRol', nombre='@nombre', email='@email', password='@password' WHERE idUsuario=@idUsuario </query>
+  </Command>
+  <Command id="deleteUserGrid">
+    <query>DELETE FROM usuarios WHERE idUsuario=@idUsuario </query>
+  </Command>
+  <Command id="insertUserGrid">
+    <query>INSERT INTO usuarios (idRol, nombre, email, password, fechaCreacion) VALUES ('@idRol','@nombre', '@email', '@password', NOW())</query>
+  </Command>
+
+  <Command id="UserByEmailDB">
+    <query>SELECT * FROM usuarios WHERE email='?' limit 0,1</query>
+   </Command>
+
+   
+
+  <Command id="actualizarUsuarioDB">
+    <query>UPDATE usuarios SET idRol=?, nombre='?', email='?', password='?', activo=?, fechaAct='?' WHERE idUsuario=? </query>
+   </Command>
+
+    <Command id="deleteUsuarioDB">
+      <query>DELETE FROM usuarios WHERE idUsuario=? </query>
+    </Command>
+
+
+
+   <Command id="obtUsuariosByIdRolDB">
+    <query>
+      SELECT A.*
+      FROM usuarios A
+      LEFT JOIN perfiles B ON A.idUsuario=B.usuarioId
+      ?
+    </query>
+  </Command>
+
+
+    <!--Consultas catConfiguraciones -->
+   <Command id="ObtTodasConfiguracionesDB">
+    <query> SELECT * FROM cat_configuraciones ? ?</query>
+   </Command>
+   <Command id="ConfiguracionByID">
+    <query>SELECT * FROM cat_configuraciones WHERE idConfiguracion=?</query>
+   </Command>
+   <Command id="updateConfiguracionDB">
+    <query> UPDATE cat_configuraciones SET nombre='?', valor='?' WHERE idConfiguracion=?</query>
+   </Command>
+  <Command id="insConfiguracionDB">
+    <query>INSERT INTO cat_configuraciones (nombre, valor) VALUES ('?', '?')</query>
+  </Command>
+  <Command id="getConfigsForGrid">
+    <query> SELECT *, CONCAT(SUBSTRING(valor, 1, 300), "...") as valor2 FROM cat_configuraciones ?</query>
+  </Command>
+  <Command id="updateConfigGrid">
+    <query> UPDATE cat_configuraciones SET valor='@valor' WHERE idConfiguracion=@idConfiguracion</query>
+  </Command>
+
+
+  <!--Consultas registro de dispositivos -->
+  <Command id="insertarRegDispositivoDB">
+    <query>INSERT INTO registro_dispositivos (usuarioId, idRegDispositivo, activo, plataforma, fechaCreacion) VALUES (?, '?', '?', '?', '?')</query>
+  </Command>
+  <Command id="ObtRegDispositivoPorIdRegDB">
+    <query>SELECT * FROM registro_dispositivos WHERE idRegDispositivo='?' AND usuarioId=?</query>
+  </Command>
+  <Command id="obtTodosRegDispositivoPorIdUsrDB">
+    <query>SELECT * FROM registro_dispositivos WHERE activo=1 AND usuarioId=?</query>
+  </Command>
+  <Command id="ActRegActivoDB">
+    <query>UPDATE registro_dispositivos SET idRegDispositivo='?', activo='?', plataforma='?' WHERE idReg=?</query>
+  </Command>
+
+
+  <!-- Consultas configuracion menu -->
+  <Command id="ObtConfigMenuDB">
+    <query>SELECT * FROM cat_configmenu ?</query>
+  </Command>
+   <!--Consulta de Ayudas -->
+  <Command id="ObtAyudaPorIdDB">
+    <query>SELECT * FROM cat_ayudas WHERE idAyuda=?</query>
+  </Command>
+<Command id="ObtTodosCatAyudasDB">
+ <query>SELECT * FROM cat_ayudas ? ORDER BY idAyuda</query>
+</Command>
+
+<Command id="ObtAyudaPorAliasDB">
+ <query>SELECT * FROM cat_ayudas WHERE alias='?'</query>
+</Command>
+
+<Command id="updateAyudaPorAliasDB">
+    <query>UPDATE cat_ayudas SET ?='?' WHERE alias='?'</query>
+</Command>
+
+    <!--Consultas comunicados -->
+  <Command id="GetallComunicados">
+    <query>SELECT * FROM comunicados ? ORDER BY idComunicado DESC</query>
+  </Command>
+  <Command id="obtComunicadoPorIdDB">
+    <query>SELECT * FROM comunicados WHERE idComunicado=?</query>
+  </Command>
+  <Command id="insertComunicadoDB">
+   <query>INSERT INTO comunicados (titulo, descripcionCorta, contenido, opcTipo, activo, imgComunicado, fechaCreacion, urlComunicado, urlVideo) VALUES ('?', '?', '?', ?, ?, '?', '?', '?', '?')</query>
+  </Command>
+  <Command id="deleteComunicadosDB">
+   <query>DELETE FROM comunicados WHERE idComunicado=?</query>
+  </Command>
+  <Command id="updateComunicadoCampoDB">
+   <query>UPDATE comunicados SET ?='?' WHERE idComunicado=?</query>
+  </Command>
+
+  <Command id="updateComunicadoDB">
+   <query>UPDATE comunicados SET titulo='?', descripcionCorta='?', contenido='?', opcTipo='?', activo=?, idUsuarioCmb=?, fechaUltCambio='?', urlComunicado='?', urlVideo='?' WHERE idComunicado=?</query>
+  </Command>
+
+  <Command id="getComunicadoForGrid">
+    <query>SELECT * FROM comunicados</query>
+  </Command>
+  <!-- <Command id="updateComunicadoGrid">
+    <query>UPDATE comunicados SET titulo='@titulo', descripcionCorta='@descripcionCorta', contenido='@contenido', opcTipo='@opcTipo', urlVideo='@urlVideo', activo='@activo' WHERE idComunicado=@idComunicado</query>
+  </Command>
+  <Command id="deleteComunicadoGrid">
+    <query>DELETE FROM comunicados WHERE idComunicado=@idComunicado</query>
+  </Command> -->
+
+
+
+<!-- Consultas nuxiba -->
+  <Command id="obtTodosUsuariosDB">
+    <query> 
+    SELECT A.*, B.Sueldo, B.FechaIngreso 
+    FROM users AS A 
+    LEFT JOIN empleados B ON A.userId=B.userId
+    ? 
+    ?
+    </query>
+  </Command>
+
+    <Command id="updateUsuarioDB">
+    <query>UPDATE empleados SET ?='?' WHERE userId=?</query>
+  </Command>
+
+  <Command id="insertUsuarioDB">
+    <query>INSERT INTO users (Login, Nombres, Paterno, Materno) VALUES ('?', '?', '?', '?')</query>
+  </Command>
+
+  <Command id="insertEmpleadoDB">
+    <query>INSERT INTO empleados (userId, Sueldo, FechaIngreso) VALUES ('?', ?, NOW())</query>
+  </Command>
+
+
+</Commands>
